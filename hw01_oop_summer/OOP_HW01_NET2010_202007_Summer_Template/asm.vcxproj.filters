@@ -19,6 +19,9 @@
     <Filter Include="openGLbasic">
       <UniqueIdentifier>{947d4824-a0bc-4c3e-b269-cac8a25ac7ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="openGLapp">
+      <UniqueIdentifier>{eb61e24f-9c64-4001-adf1-e9a183acb49d}</UniqueIdentifier>
+    </Filter>
     <Filter Include="primitives">
       <UniqueIdentifier>{8e59679c-5424-4f85-9f41-f451a8666a77}</UniqueIdentifier>
     </Filter>
@@ -51,9 +54,6 @@
     </Filter>
     <Filter Include="textureManager">
       <UniqueIdentifier>{8f3071b8-d965-4c0d-985b-8603b94f2efc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="main_source\openGLapp">
-      <UniqueIdentifier>{eb61e24f-9c64-4001-adf1-e9a183acb49d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -88,19 +88,19 @@
       <Filter>openGLbasic</Filter>
     </ClCompile>
     <ClCompile Include="openGLapp\openGLapp.cpp">
-      <Filter>main_source\openGLapp</Filter>
+      <Filter>openGLapp</Filter>
     </ClCompile>
     <ClCompile Include="openGLapp\openGLapp.events.cpp">
-      <Filter>main_source\openGLapp</Filter>
+      <Filter>openGLapp</Filter>
     </ClCompile>
     <ClCompile Include="openGLapp\openGLapp_draw.cpp">
-      <Filter>main_source\openGLapp</Filter>
+      <Filter>openGLapp</Filter>
     </ClCompile>
     <ClCompile Include="openGLapp\openGLapp_init.cpp">
-      <Filter>main_source\openGLapp</Filter>
+      <Filter>openGLapp</Filter>
     </ClCompile>
     <ClCompile Include="openGLapp\openGLapp_update.cpp">
-      <Filter>main_source\openGLapp</Filter>
+      <Filter>openGLapp</Filter>
     </ClCompile>
     <ClCompile Include="primitives\basic_tools.cpp">
       <Filter>primitives</Filter>
@@ -186,13 +186,13 @@
       <Filter>openGLbasic</Filter>
     </ClInclude>
     <ClInclude Include="openGLapp\openGLapp.h">
-      <Filter>main_source\openGLapp</Filter>
+      <Filter>openGLapp</Filter>
     </ClInclude>
     <ClInclude Include="openGLapp\openGLapp_headers.h">
-      <Filter>main_source\openGLapp</Filter>
+      <Filter>openGLapp</Filter>
     </ClInclude>
     <ClInclude Include="openGLapp\openGLapp_myStuff.h">
-      <Filter>main_source\openGLapp</Filter>
+      <Filter>openGLapp</Filter>
     </ClInclude>
     <ClInclude Include="primitives\basic_tools.h">
       <Filter>primitives</Filter>
