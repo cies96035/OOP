@@ -5,21 +5,21 @@
 //
 // National Chiao Tung University, Taiwan
 // Computer Science
-// Date: 2020/07/14
+// Date: 2020/07/17
 //
 #include "mySystemApp.h"
 
 using namespace std;
 
-#define STUDENT_INFO "Name:XYZ   ID:0123456789"
+#define STUDENT_INFO "Name:¼B¥ÃºÖ   ID:109511015"
 
 void MY_SYSTEM_APP::showMyStudentInfo_2020_Summer( ) const
 {
 	cout << "*******************************" << endl;
-    cout << "Date:2020/07/14" << endl;
-	cout << "Student ID:\t" << endl;
-	cout << "Student Name:\t" << endl;
-	cout << "Student Email:\t" << endl;
+    cout << "Date:\t2020/07/17" << endl;
+	cout << "Student ID:\t109511015" << endl;
+	cout << "Student Name:\t¼B¥ÃºÖ" << endl;
+	cout << "Student Email:\tcies96035.eed09@nctu.edu.tw" << endl;
 	cout << "*******************************" << endl;
 }
 

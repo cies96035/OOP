@@ -96,7 +96,7 @@ void QUARTIC_FUNCTION::askForInput( )
 	//
 	cout << "QUARTIC_FUNCTION" << endl;
 	
-	cout << "ax^4 + bx^4 + cx^2 + dx + e" << endl;
+	cout << "ax^4 + bx^3 + cx^2 + dx + e" << endl;
 
 	cout << "Input the range of x in [-100, 100]:" << endl;
     cout << "Input x0 and x1" << endl;

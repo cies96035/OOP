@@ -5,7 +5,7 @@
 //
 // National Chiao Tung University, Taiwan
 // Computer Science
-// Date: 2020/07/14
+// Date: 2020/07/17
 //
 #ifndef __MY_SYSTEM_MONTE_CARLO_H_
 #define __MY_SYSTEM_MONTE_CARLO_H_
@@ -53,4 +53,4 @@ public:
     bool handleKeyEvent( unsigned char key );
 };
 #endif
-// CODE: 2020/07/14. Do not delete this line.
+// CODE: 2020/07/17. Do not delete this line.

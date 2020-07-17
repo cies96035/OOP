@@ -5,7 +5,7 @@
 //
 // National Chiao Tung University, Taiwan
 // Computer Science
-// Date: 2020/07/14
+// Date: 2020/07/17
 //
 #include "mySystem_MonteCarlo.h"
 #include <iostream>
@@ -38,8 +38,7 @@ void MONTE_CARLO_SYSTEM::increaseRadius( )
     mRadius += 1;
     if ( mRadius > 10) mRadius = 10;
     cout << "Radius: " << mRadius << endl;
-    generateUniformSamples( );
-    computeValue();
+    reset();
 }
 
 //decrease the number of sample points
@@ -48,33 +47,32 @@ void MONTE_CARLO_SYSTEM::decreaseRadius( )
     mRadius -= 1;
     if ( mRadius < 1) mRadius = 1;
     cout << "Radius: " << mRadius << endl;
-
-    generateUniformSamples( );
-    computeValue();
+    reset();
 }
 
 //increase the number of sample points
 void MONTE_CARLO_SYSTEM::increase(int increasedAmount)
 {
     mNumSamples += increasedAmount;
-    //if ( mNumSamples > MAX_NUM_SAMPLES)
-    //    mNumSamples = MAX_NUM_SAMPLES;
-    //generateUniformSamples( );
-    //computeValue();
+    if ( mNumSamples > MAX_NUM_SAMPLES)
+        mNumSamples = MAX_NUM_SAMPLES;
+    reset();
 }
 
 //decrease the number of sample points
 void MONTE_CARLO_SYSTEM::decrease(int decreasedAmount)
 {
     mNumSamples -= decreasedAmount;
-   
+   if ( mNumSamples < MIN_NUM_SAMPLES)
+        mNumSamples = MIN_NUM_SAMPLES;
+    reset();
 }
 
 //
-//Show the system name
-//Ask to input the radius of the circle
-//Ask to input the number of sample points
-//Call computeSamples( ) to compute the sample points and pi
+/**///Show the system name
+/**///Ask to input the radius of the circle
+/**///Ask to input the number of sample points
+/*?*///Call computeSamples( ) to compute the sample points and pi 
 //
 void MONTE_CARLO_SYSTEM::askForInput( )
 {
@@ -89,6 +87,16 @@ void MONTE_CARLO_SYSTEM::askForInput( )
         // 
         if ( mRadius >1 && mRadius <= 10) break;
     }
+
+	//Input mNumSamples
+	do
+	{
+	    cout << "Please input the number of samples [1,1000000]:" << endl;
+		cin >> mNumSamples;
+	}while( mNumSamples <1 || mNumSamples > 1000000);
+	//computeSamples();
+	
+    reset();
 }
 
 //
@@ -103,10 +111,12 @@ void MONTE_CARLO_SYSTEM::generateUniformSamples( )
 
 	for ( int i = 0; i < mNumSamples; ++i ) {
 		float x, y;
+
 		double fx = ( rand( )%RAND_MAX )/(double) (RAND_MAX-1);
-		
         x = 2*fx*mRadius - mRadius;
-		y = 0.0;
+
+		double fy = ( rand( )%RAND_MAX )/(double) (RAND_MAX-1);
+		y = 2*fy*mRadius - mRadius;
 
 		mX.push_back( x );
 		mY.push_back( y );
@@ -119,14 +129,15 @@ void MONTE_CARLO_SYSTEM::generateUniformSamples( )
 //
 double MONTE_CARLO_SYSTEM::computeValue()
 {
-    	int counter = 0;
+	float x,y;
+    int counter = 0;
 	for ( int i = 0; i < mNumSamples; ++i ) {
-		bool flgInside = false;
-		float x = mX[ i ];
-		float y = mY[ i ];
-
+		if(getSample(i, x, y))
+			counter++;
 	}
-    mValue = 0.0;
+
+	//pi r^2 / (2r)^2 = pi / 4
+    mValue = 4 * counter / (double)mNumSamples;
 	cout << "mValue:" << mValue << endl;
     return mValue;
 }
@@ -148,12 +159,11 @@ double MONTE_CARLO_SYSTEM::getRadius( ) const
 //Return the number of sample points
 int MONTE_CARLO_SYSTEM::getNumSamples( ) const
 {
-	
 	return mNumSamples;
 }
 
 //
-// If an option is set, compute the value.
+/**/// If an option is set, compute the value.
 //
 bool MONTE_CARLO_SYSTEM::handleKeyEvent( unsigned char key )
 {
@@ -165,7 +175,7 @@ bool MONTE_CARLO_SYSTEM::handleKeyEvent( unsigned char key )
         flgHandled = true;
         break;
     case '2':
-        //MCS_OPTION::MCS_OPTION_FUNC_01;
+        mOption = MCS_OPTION::MCS_OPTION_FUNC_01;
         flgHandled = true;
         break;
     }
@@ -188,12 +198,13 @@ bool MONTE_CARLO_SYSTEM::isInsideRegion( float x, float y ) const
     float fy;
     switch (mOption) {
      case MCS_OPTION::MCS_OPTION_CIRCLE:
-	    if ( x*x > mRadius ) {
+	    if ( x*x + y*y <= mRadius*mRadius )
 	    	flgInside = true;
-	    }
       break;
 
      case MCS_OPTION::MCS_OPTION_FUNC_01:
+		if ( x*x + y*y <= mRadius*mRadius && y >= sin(x) + cos(x) ) 
+			flgInside = true;
         break;
     }
     return flgInside;
@@ -210,11 +221,13 @@ bool MONTE_CARLO_SYSTEM::isInsideRegion( float x, float y ) const
 bool MONTE_CARLO_SYSTEM::getSample(int sampleIndex, float &x, float &y) const
 {
 	bool flgInside = false;
-	//x = mX[ sampleIndex ];
-    y = 0.0;
+	x = mX[ sampleIndex ];
+	y = mY[ sampleIndex ];
+	if(isInsideRegion(x,y))
+		flgInside = true;
 
 	return flgInside;
 }
 //
-// CODE: 2020/07/14. Do not delete this line.
+// CODE: 2020/07/17. Do not delete this line.
 //
