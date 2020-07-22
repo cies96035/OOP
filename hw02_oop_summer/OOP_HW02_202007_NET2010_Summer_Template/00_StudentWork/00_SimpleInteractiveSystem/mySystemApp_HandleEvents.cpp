@@ -17,7 +17,7 @@
 
 using namespace std;
 
-#define cn_StudentInfo "Student Name:xyz. ID:012345678"
+#define cn_StudentInfo "Student Name:¼B¥ÃºÖ ID:109511015"
 
 void MY_SYSTEM_APP::askForInput( )
 {

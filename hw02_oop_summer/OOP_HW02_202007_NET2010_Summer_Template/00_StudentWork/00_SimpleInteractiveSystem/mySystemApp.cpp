@@ -14,10 +14,10 @@ using namespace std;
 void MY_SYSTEM_APP::showStudentInfo_2020_Summer( ) const
 {
 	cout << "*******************************" << endl;
-    cout << "Date: 2020/07/14" << endl;
-	cout << "Student ID:\t" << endl;
-	cout << "Student Name:\t" << endl;
-	cout << "Student Email:\t" << endl;
+    cout << "Date: 2020/7/21" << endl;
+	cout << "Student ID:\t109511015" << endl;
+	cout << "Student Name:\t¼B¥ÃºÖ" << endl;
+	cout << "Student Email:\tcies96035.eed09@nctu.edu.tw" << endl;
 	cout << "*******************************" << endl;
 }
 

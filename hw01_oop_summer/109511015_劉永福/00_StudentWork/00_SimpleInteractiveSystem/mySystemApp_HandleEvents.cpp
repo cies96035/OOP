@@ -146,7 +146,7 @@ void MY_SYSTEM_APP::updateMonteCarloTitle( )
     strs.str("");
     strs.clear( );
     strs << value;
-    title = title + "  Area:";
+	title = title + "  Value:";
     title = title + strs.str();
     numSamples = mMonteCarloSystem.getNumSamples();
     strs_int << numSamples;

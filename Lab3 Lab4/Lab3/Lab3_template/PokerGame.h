@@ -23,7 +23,6 @@ class PokerGame
 	private:
 		vector<int> playerCards;
 		cardType Type;
-
 	public:
 		
 		void Distribute(bool usedCards[52]);
@@ -43,4 +42,3 @@ class PokerGame
 		bool isTwoPairs();
 		bool isOnePair();
 };
-

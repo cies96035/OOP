@@ -16,11 +16,20 @@
 #include <vector>
 using std::vector;
 
+/*
+GRAPH_NODE:
+radius
+position
+its_id
+its_edges'_ID
+dynamicID->active arr -> index
+*/
 class GRAPH_NODE {
 public:
     GRAPH_NODE( ) {
         r = 1.0;
-        p = vector3(0.0, 0.0, 0.0);
+        /********** Keep y zero **********/
+        p = vector3(0.0, 0.0, 0.0);//(X,Y,Z)
     }
     vector3 p;  //position
     double r;   //radius    
@@ -32,6 +41,12 @@ public:
     //
 };
 
+/*
+GRAPH_EDGE:
+its_id
+dynamicID->active arr -> index
+its connected node's id
+*/
 class GRAPH_EDGE {
 public:
     int id;

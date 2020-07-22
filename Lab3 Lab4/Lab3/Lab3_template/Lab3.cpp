@@ -6,6 +6,13 @@ using namespace std;
 void cheatInput(vector<int> &player)
 {
 	//TO_DO: Ask user input five number and store them to vector of player
+	int the_input;
+	for(int i=0;i<5;i++)
+	{
+		cin>>the_input;
+		player.emplace_back(the_input);
+	}
+	return;
 }
 
 int main()
@@ -20,7 +27,7 @@ int main()
 		char GameType;
 		cout << "Enter S to start the game, C to enter cheating mode, Q to Exit the process" << endl;
 		cin >> GameType;
-
+		
 		switch (GameType)
 		{
 			case 's':
@@ -71,5 +78,4 @@ int main()
 		cout << endl;
 
 	}
-
 }

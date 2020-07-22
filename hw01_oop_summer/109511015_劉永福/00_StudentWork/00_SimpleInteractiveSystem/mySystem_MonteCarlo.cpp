@@ -30,6 +30,16 @@ void MONTE_CARLO_SYSTEM::reset()
 {
     generateUniformSamples( );
     computeValue();
+	
+	switch (mOption) {
+		case MCS_OPTION::MCS_OPTION_CIRCLE:
+			cout << "PI:" << mValue << endl;
+      break;
+		case MCS_OPTION::MCS_OPTION_FUNC_01:
+			cout << "Area:" << mValue << endl;
+        break;
+    }
+
 }
 
 //increase the radius of the circle
@@ -38,7 +48,7 @@ void MONTE_CARLO_SYSTEM::increaseRadius( )
     mRadius += 1;
     if ( mRadius > 10) mRadius = 10;
     cout << "Radius: " << mRadius << endl;
-    reset();
+    //reset();
 }
 
 //decrease the number of sample points
@@ -47,7 +57,7 @@ void MONTE_CARLO_SYSTEM::decreaseRadius( )
     mRadius -= 1;
     if ( mRadius < 1) mRadius = 1;
     cout << "Radius: " << mRadius << endl;
-    reset();
+    //reset();
 }
 
 //increase the number of sample points
@@ -56,7 +66,7 @@ void MONTE_CARLO_SYSTEM::increase(int increasedAmount)
     mNumSamples += increasedAmount;
     if ( mNumSamples > MAX_NUM_SAMPLES)
         mNumSamples = MAX_NUM_SAMPLES;
-    reset();
+    //reset();
 }
 
 //decrease the number of sample points
@@ -65,7 +75,7 @@ void MONTE_CARLO_SYSTEM::decrease(int decreasedAmount)
     mNumSamples -= decreasedAmount;
    if ( mNumSamples < MIN_NUM_SAMPLES)
         mNumSamples = MIN_NUM_SAMPLES;
-    reset();
+    //reset();
 }
 
 //
@@ -136,9 +146,18 @@ double MONTE_CARLO_SYSTEM::computeValue()
 			counter++;
 	}
 
+
+	switch (mOption) {
+		case MCS_OPTION::MCS_OPTION_CIRCLE:
+			mValue = 4 * counter / (double)mNumSamples;
+      break;
+
+		case MCS_OPTION::MCS_OPTION_FUNC_01:
+			mValue = 4 * mRadius * mRadius * counter / (double)mNumSamples;
+        break;
+    }
+
 	//pi r^2 / (2r)^2 = pi / 4
-    mValue = 4 * counter / (double)mNumSamples;
-	cout << "mValue:" << mValue << endl;
     return mValue;
 }
 

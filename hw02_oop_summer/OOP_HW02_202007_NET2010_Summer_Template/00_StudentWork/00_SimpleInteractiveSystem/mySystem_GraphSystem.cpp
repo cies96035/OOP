@@ -1,7 +1,7 @@
 //********************************************
-// Student Name			:
-// Student ID			:
-// Student Email Address:
+// Student Name			:�B�ú�
+// Student ID			:109511015
+// Student Email Address:cies96035.eed09@nctu.edu.tw
 //********************************************
 //
 // Instructor: Sai-Keung WONG
@@ -21,6 +21,8 @@ using namespace std;
 
 #define GRAPH_FILE_NAME "graph.txt"
 
+
+//pdf p.4 MAX=1000,1000
 int Param::GRAPH_MAX_NUM_NODES = 10000;
 int Param::GRAPH_MAX_NUM_EDGES = 10000;
 int Param::Export_Count_DrawingFX = 300;
@@ -62,49 +64,89 @@ void GRAPH_SYSTEM::initMemoryPool( )
 
 void GRAPH_SYSTEM::reset( )
 {
+    /****************************unknow****************************/
     stopAutoNodeDeletion();
+    /****************************unknow****************************/
 
     //mNumPoints_DoubleCircles = 0;
 
+    //How many Nodes/Edges used
     mCurNumOfActiveNodes = 0;
     mCurNumOfActiveEdges = 0;
 
+    //How many Nodes/Edges left
     mCurNumOfFreeNodes = mMaxNumNodes;
     mCurNumOfFreeEdges = mMaxNumEdges;
 
+    /****************************unknow****************************/
     for ( int i = 0; i < mCurNumOfFreeNodes; ++i ) {
         mFreeNodeArr[ i ] = 0;
     }
     for ( int i = 0; i < mCurNumOfFreeEdges; ++i ) {
         mFreeEdgeArr[ i ] = 0;
     }
+    /****************************unknow****************************/
 
+    /****************************unknow****************************/
     mPassiveSelectedNode = 0;
     mSelectedNode = 0;
+    /****************************unknow****************************/
 }
 
+
+/*
+<-----get free node from pool----->
+get pool's id
+return NODE = pool+id
+give a dynamic id to NODE
+connected edge id(vector) .clear()
+pos=0,0,0
+r=1
+*/
 GRAPH_NODE *GRAPH_SYSTEM::getFreeNode( ) 
 {
+    //isnt any nodes left
     if ( mCurNumOfFreeNodes == 0 ) return 0;
-    --mCurNumOfFreeNodes;
+
+    //else
+    --mCurNumOfFreeNodes;//use one
+
+    
+    /****************************unknow****************************/
+    mFreeNodeArr[ mCurNumOfFreeNodes ] = 
     int id = mFreeNodeArr[ mCurNumOfFreeNodes ];
-    GRAPH_NODE *n = 0;
+    /****************************unknow****************************/
+
+    //GRAPH_NODE *n = 0;//(nodepointer->NULL)
+    GRAPH_NODE *n = new GRAPH_NODE;
 
     ++mCurNumOfActiveNodes;
     return n;
 }
-
+//^
+//| similar
+//V
 GRAPH_EDGE *GRAPH_SYSTEM::getFreeEdge( )
 {
+    //isnt any nodes left
     if ( mCurNumOfFreeEdges == 0 ) return 0;
-    --mCurNumOfFreeEdges;
+
+    //else
+    --mCurNumOfFreeEdges;//use one
+
+
+    /****************************unknow****************************/
     int id = mFreeEdgeArr[ mCurNumOfFreeEdges ];
-    GRAPH_EDGE *e = 0;
+    /****************************unknow****************************/
+
+    GRAPH_EDGE *e = 0;//(edgepointer->NULL)
 
     ++mCurNumOfActiveEdges;
     return e;
 }
 
+
+//Default Graph (option 1)
 void GRAPH_SYSTEM::createDefaultGraph( )
 {
     cout << "here"<< endl;
@@ -113,10 +155,14 @@ void GRAPH_SYSTEM::createDefaultGraph( )
     int n_0 = addNode( 0.0, 0.0, 0.0 );
     cout << "n_0:"<< n_0 << endl;
 
+    int n_1 = addNode( 5.0, 0.0, 0.0 );
+    cout << "n_1:"<< n_1 << endl;
+
     int n_2 = addNode( 0.0, 0.0, 5.0 );
     cout << "n_2:"<< n_2 << endl;
 
     addEdge( n_0, n_2 );
+    addEdge( n_1, n_2 );
 
 }
 
@@ -205,13 +251,18 @@ void GRAPH_SYSTEM::createNet_RadialCircular( int n ) {
     float r = 15; // radius
 }
 
-int GRAPH_SYSTEM::addNode( float x, float y, float z, float r )
+
+/****Add a node and return the id of the node****/
+//int GRAPH_SYSTEM::addNode( float x, float y, float z, float r )
+int GRAPH_SYSTEM::addNode( float x, float y, float z, float r = 1.0 )
 {
-    GRAPH_NODE *g;
-    
+    GRAPH_NODE *g=getFreeNode();
+    g->p.Set(x,y,z);
+    g->r=r;
     return 0;
 }
 
+/****Add an edge and return the id of an edge****/
 int GRAPH_SYSTEM::addEdge( int nodeID_0, int nodeID_1 )
 {
     int id = -1;
@@ -241,8 +292,12 @@ void GRAPH_SYSTEM::askForInput( )
 GRAPH_NODE *GRAPH_SYSTEM::findNearestNode( double x, double z, double &cur_distance2 ) const
 {
     GRAPH_NODE *n = 0;
-    cur_distance2 = -1.0;
+    cur_distance2 = 2e18;//INF
     for ( int i = 0; i < mCurNumOfActiveNodes; ++i ) {
+        //double detx=this->x-x;
+        //double detz=this->z-z;
+        //if( detx*detx + detz*detz < cur_distance2)
+        //{/*update n*/}
     }
     return n;
 }
@@ -399,6 +454,7 @@ void GRAPH_SYSTEM::handlePassiveMouseEvent( double x, double z )
     mPassiveSelectedNode = n;
 }
 
+///////////////////mCurNumOfActiveNodes/////////////////////////
 int GRAPH_SYSTEM::getNumOfNodes( ) const
 {
     return mCurNumOfActiveNodes;
@@ -410,15 +466,18 @@ int GRAPH_SYSTEM::getNodeID( int nodeIndex ) const
     return nodeID;
 }
 
+
+//ERROR
 int GRAPH_SYSTEM::getNodeInfo( int nodeIndex, double &r, vector3 &p ) const
 {
     int nodeID = mActiveNodeArr[ nodeIndex ];
     GRAPH_NODE *n = &mNodeArr_Pool[ nodeID ];
-    r = 1.0;
-    p = vector3(0, 0, 0);
+    r = n->r;
+    p = n->p;
     return nodeID;
 }
 
+///////////////////mCurNumOfActiveEdges/////////////////////////
 int GRAPH_SYSTEM::getNumOfEdges( ) const
 {
     return mCurNumOfActiveEdges;
@@ -437,12 +496,15 @@ int GRAPH_SYSTEM::getNodeIDOfEdge( int edgeIndex, int nodeIndex ) const
     return e->nodeID[ nodeIndex ];
 }
 
+///ＣＯＮＦＵＳＥ///
 vector3 GRAPH_SYSTEM::getNodePositionOfEdge( int edgeIndex, int nodeIndex ) const
 {
     vector3 p;
     return p;
 }
 
+
+//Delete Flag?
 void GRAPH_SYSTEM::stopAutoNodeDeletion()
 {
     mFlgAutoNodeDeletion = false;

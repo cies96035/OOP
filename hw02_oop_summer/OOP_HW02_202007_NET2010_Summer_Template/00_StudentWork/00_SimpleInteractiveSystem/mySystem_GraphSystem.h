@@ -97,29 +97,64 @@ public:
     void exportGraph(const std::string &fileName) const;
 
 protected:
-    int mMaxNumNodes;
-    int mMaxNumEdges;
-    GRAPH_NODE *mNodeArr_Pool; 
-    GRAPH_EDGE *mEdgeArr_Pool;
-    //
-    int *mActiveNodeArr;
-    int mCurNumOfActiveNodes;
-    int *mActiveEdgeArr;
-    int mCurNumOfActiveEdges;
-    //
-    int *mFreeNodeArr;
-    int *mFreeEdgeArr;
-    int mCurNumOfFreeNodes;
-    int mCurNumOfFreeEdges;
-    //
+
+    /*
+    GRAPH_NODE:
+    radius
+    position
+    its_id
+    its_edges'_ID
+    dynamicID->active arr -> index
+    */
+
+   
+    /*
+    GRAPH_EDGE:
+    its_id
+    dynamicID->active arr -> index
+    its connected node's id
+    */
+
+    /*
+    <---Arr--->
+    Arr=new int/GRAPH_NODE(EDGE) [Node(Edge)_Max]
+    
+    */
+
+    int mMaxNumNodes; //MAX_Nodes
+    int mMaxNumEdges; //MAX_Edges
+
+    //Initial id = 0 ~ Max-1(initMemoryPool)
+    //use unique id
+    GRAPH_NODE *mNodeArr_Pool; //NODE_arr
+    GRAPH_EDGE *mEdgeArr_Pool; //Edge_arr
+
+    //Active->Used dynamicID
+    int *mActiveNodeArr; //active_node_arr
+    int *mActiveEdgeArr; //active_edge_arr
+    int mCurNumOfActiveNodes; //active_node_arr.size()
+    int mCurNumOfActiveEdges; //active_edge_arr.size()
+
+    /****************************unknow****************************/
+    int *mFreeNodeArr; //free_node_arr
+    int *mFreeEdgeArr; //free_edge_arr
+    int mCurNumOfFreeNodes; //free_node_arr.size()
+    int mCurNumOfFreeEdges; //free_edge_arr.size()
+    /****************************unknow****************************/
+
+    /****************************unknow****************************/
     GRAPH_NODE *mSelectedNode;
     GRAPH_NODE *mPassiveSelectedNode;
-    //
-    bool mFlgAutoNodeDeletion;
+    /****************************unknow****************************/
 
+    /****************************unknow****************************/
+    bool mFlgAutoNodeDeletion;
     int mNumPoints_DoubleCircles;
-    //
+    /****************************unknow****************************/
+
+    /****************************unknow****************************/
     mutable int mExport_Count_DrawingFX;
+    /****************************unknow****************************/
 };
 
 #endif
