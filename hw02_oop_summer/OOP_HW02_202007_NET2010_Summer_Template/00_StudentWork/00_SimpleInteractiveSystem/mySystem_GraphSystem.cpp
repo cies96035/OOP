@@ -23,8 +23,8 @@ using namespace std;
 
 
 //pdf p.4 MAX=1000,1000
-int Param::GRAPH_MAX_NUM_NODES = 10000;
-int Param::GRAPH_MAX_NUM_EDGES = 10000;
+int Param::GRAPH_MAX_NUM_NODES = 1000;
+int Param::GRAPH_MAX_NUM_EDGES = 1000;
 int Param::Export_Count_DrawingFX = 300;
 
 GRAPH_SYSTEM::GRAPH_SYSTEM( )
@@ -64,6 +64,7 @@ void GRAPH_SYSTEM::initMemoryPool( )
 
 void GRAPH_SYSTEM::reset( )
 {
+	/*ignore
     /****************************unknow****************************/
     stopAutoNodeDeletion();
     /****************************unknow****************************/
@@ -78,14 +79,13 @@ void GRAPH_SYSTEM::reset( )
     mCurNumOfFreeNodes = mMaxNumNodes;
     mCurNumOfFreeEdges = mMaxNumEdges;
 
-    /****************************unknow****************************/
+	//set index unique id which isnt used
     for ( int i = 0; i < mCurNumOfFreeNodes; ++i ) {
-        mFreeNodeArr[ i ] = 0;
+        mFreeNodeArr[ i ] = i;
     }
     for ( int i = 0; i < mCurNumOfFreeEdges; ++i ) {
-        mFreeEdgeArr[ i ] = 0;
+        mFreeEdgeArr[ i ] = i;
     }
-    /****************************unknow****************************/
 
     /****************************unknow****************************/
     mPassiveSelectedNode = 0;
@@ -106,20 +106,24 @@ r=1
 GRAPH_NODE *GRAPH_SYSTEM::getFreeNode( ) 
 {
     //isnt any nodes left
-    if ( mCurNumOfFreeNodes == 0 ) return 0;
+    if ( mCurNumOfFreeNodes == 0 ) return NULL;// --> addNOde return -1
 
     //else
     --mCurNumOfFreeNodes;//use one
 
-    
-    /****************************unknow****************************/
-    mFreeNodeArr[ mCurNumOfFreeNodes ] = 
-    int id = mFreeNodeArr[ mCurNumOfFreeNodes ];
-    /****************************unknow****************************/
+    //get unique id
+    int id = mFreeNodeArr[ mCurNumOfFreeNodes];
 
-    //GRAPH_NODE *n = 0;//(nodepointer->NULL)
-    GRAPH_NODE *n = new GRAPH_NODE;
+	//use id to get a DRAPH_NODE
+    GRAPH_NODE *n = &mNodeArr_Pool[ id ];
 
+	//a NODE is active
+	mActiveNodeArr[ mCurNumOfActiveNodes ] = id;
+
+	//get dynamic id
+    n->dynamicID = mCurNumOfActiveNodes;
+	
+	//add Active
     ++mCurNumOfActiveNodes;
     return n;
 }
@@ -134,13 +138,15 @@ GRAPH_EDGE *GRAPH_SYSTEM::getFreeEdge( )
     //else
     --mCurNumOfFreeEdges;//use one
 
-
-    /****************************unknow****************************/
     int id = mFreeEdgeArr[ mCurNumOfFreeEdges ];
-    /****************************unknow****************************/
+	
+	//get GRAPH_NODE with POOL
+    GRAPH_EDGE *e = &mEdgeArr_Pool[ id ];
 
-    GRAPH_EDGE *e = 0;//(edgepointer->NULL)
+	//get dynamic id
+    e->dynamicID = mCurNumOfActiveEdges;
 
+	//add Active
     ++mCurNumOfActiveEdges;
     return e;
 }
@@ -256,18 +262,26 @@ void GRAPH_SYSTEM::createNet_RadialCircular( int n ) {
 //int GRAPH_SYSTEM::addNode( float x, float y, float z, float r )
 int GRAPH_SYSTEM::addNode( float x, float y, float z, float r = 1.0 )
 {
-    GRAPH_NODE *g=getFreeNode();
-    g->p.Set(x,y,z);
-    g->r=r;
-    return 0;
+    GRAPH_NODE *g = getFreeNode();
+	if( g==NULL ) return -1;
+	g->p = vector3(x,y,z);
+	g->r = r;
+	g->edgeID.clear();//initial
+	return g->id;
 }
 
 /****Add an edge and return the id of an edge****/
-int GRAPH_SYSTEM::addEdge( int nodeID_0, int nodeID_1 )
+int GRAPH_SYSTEM::addEdge( int nodeID_0, int nodeID_1 )//pass by unique id
 {
-    int id = -1;
+    GRAPH_EDGE *h = getFreeEdge();
+	if( h==NULL ) return -1;
+	h->nodeID[0]=nodeID_0;
+	h->nodeID[1]=nodeID_1;
 
-    return id;
+	//each node add a new Edge
+	mNodeArr_Pool[ nodeID_0 ].edgeID.emplace_back( h->id );
+	mNodeArr_Pool[ nodeID_1 ].edgeID.emplace_back( h->id );
+	return h->id;
 }
 
 void GRAPH_SYSTEM::askForInput( )
@@ -330,7 +344,19 @@ void GRAPH_SYSTEM::clickAt(double x, double z)
 void GRAPH_SYSTEM::deleteEdge( int edgeID )
 {
     GRAPH_EDGE *e = &mEdgeArr_Pool[ edgeID ];
-    int dynamicID = e->dynamicID;
+    int dynamicID = e->dynamicID; 
+	
+	//update Active
+	mCurNumOfActiveEdges--;
+	swap(mActiveEdgeArr[edgeID],mActiveEdgeArr[ mCurNumOfActiveEdges]);
+
+	//update Pool
+	mEdgeArr_Pool[ mCurNumOfActiveEdges ].dynamicID = dynamicID;
+	
+	//update Free
+	swap(mFreeEdgeArr[ e->id ],mFreeEdgeArr[ mCurNumOfFreeEdges ]);
+	mCurNumOfFreeEdges++;
+
 }
 
 void GRAPH_SYSTEM::removeEdgeFromNode( const GRAPH_EDGE *e, int nodeID )
@@ -344,7 +370,7 @@ void GRAPH_SYSTEM::deleteEdgesOfNode( int nodeID )
 }
 
 void GRAPH_SYSTEM::deleteNode( int nodeID ) {
-    if ( mCurNumOfActiveNodes <= 0 ) return;
+    if ( mCurNumOfActiveNodes <= 0 ) return;//no node can delete
     GRAPH_NODE *n = &mNodeArr_Pool[ nodeID ];
     int dynamicID = n->dynamicID;
 

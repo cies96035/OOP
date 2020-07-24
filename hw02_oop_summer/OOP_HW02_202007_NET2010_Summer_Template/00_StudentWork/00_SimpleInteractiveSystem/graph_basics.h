@@ -37,7 +37,7 @@ public:
     int id;     //unique ID
     int dynamicID; // in the active index array
 
-    vector<int> edgeID;
+    vector<int> edgeID;//record edge's unique_id(id)
     //
 };
 
