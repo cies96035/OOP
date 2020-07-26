@@ -72,6 +72,13 @@ void f3(string &S)
     {
         cout<<S<<'\n';
     }while(my_next_permutation(S));//until there's no next_permutation
+    /*
+    
+    do
+    {
+        cout<<S<<'\n';
+    }while(my_next_permutation(S));//until there's no next_permutation
+    */
     return;
 }
 
