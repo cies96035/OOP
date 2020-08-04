@@ -169,7 +169,6 @@ void GRAPH_SYSTEM::createDefaultGraph( )
 
     addEdge( n_0, n_2 );
     addEdge( n_1, n_2 );
-
 }
 
 void GRAPH_SYSTEM::createNet_Horizontal( int nx, int ny )
@@ -260,7 +259,7 @@ void GRAPH_SYSTEM::createNet_RadialCircular( int n ) {
 
 /****Add a node and return the id of the node****/
 //int GRAPH_SYSTEM::addNode( float x, float y, float z, float r )
-int GRAPH_SYSTEM::addNode( float x, float y, float z, float r = 1.0 )
+int GRAPH_SYSTEM::addNode( float x, float y, float z, float r )
 {
     GRAPH_NODE *g = getFreeNode();
 	if( g==NULL ) return -1;
@@ -277,7 +276,6 @@ int GRAPH_SYSTEM::addEdge( int nodeID_0, int nodeID_1 )//pass by unique id
 	if( h==NULL ) return -1;
 	h->nodeID[0]=nodeID_0;
 	h->nodeID[1]=nodeID_1;
-
 	//each node add a new Edge
 	mNodeArr_Pool[ nodeID_0 ].edgeID.emplace_back( h->id );
 	mNodeArr_Pool[ nodeID_1 ].edgeID.emplace_back( h->id );

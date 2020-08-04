@@ -1,0 +1,17 @@
+﻿Build started 2/22/2016 2:34:47 PM.
+     1>Project "D:\users\wingo\teaching\ObjectOrientedProgramming\1_Class_Examples\001_QuadraticEquation\00_SimpleApproach\oop\oop.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release\oop.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+       Link:
+         All outputs are up-to-date.
+         oop.vcxproj -> D:\users\wingo\teaching\ObjectOrientedProgramming\1_Class_Examples\001_QuadraticEquation\00_SimpleApproach\Release\oop.exe
+       FinalizeBuildStatus:
+         Deleting file "Release\oop.unsuccessfulbuild".
+         Touching "Release\oop.lastbuildstate".
+     1>Done Building Project "D:\users\wingo\teaching\ObjectOrientedProgramming\1_Class_Examples\001_QuadraticEquation\00_SimpleApproach\oop\oop.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.04
