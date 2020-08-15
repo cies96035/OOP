@@ -1,0 +1,731 @@
+//********************************************
+// Student Name			:¼B¥ÃºÖ
+// Student ID			:109511015
+// Student Email Address:cies96035.eed09@nctu.edu.tw
+//********************************************
+//
+// Instructor: Sai-Keung WONG
+// Email:	cswingo@cs.nctu.edu.tw
+//			wingo.wong@gmail.com
+//
+// National Chiao Tung University, Taiwan
+// Computer Science
+// Date: 2019/04/09
+//
+#include <iostream>
+#include <fstream>
+#include "mySystem_GraphSystem.h"
+#include <time.h>
+#include <cmath>
+
+using namespace std;
+
+#define GRAPH_FILE_NAME "graph.txt"
+
+
+//pdf p.4 MAX=1000,1000
+int Param::GRAPH_MAX_NUM_NODES = 10000;
+int Param::GRAPH_MAX_NUM_EDGES = 10000;
+int Param::Export_Count_DrawingFX = 300;
+
+/*************************complete*************************/
+GRAPH_SYSTEM::GRAPH_SYSTEM( )
+{
+    mFlgAutoNodeDeletion = false;
+    mExport_Count_DrawingFX = 0;
+
+    initMemoryPool();
+    createDefaultGraph();
+}
+
+/*************************complete*************************/
+void GRAPH_SYSTEM::initMemoryPool( )
+{
+    mMaxNumNodes = Param::GRAPH_MAX_NUM_NODES;
+    mMaxNumEdges = Param::GRAPH_MAX_NUM_EDGES;
+
+    mNodeArr_Pool = new GRAPH_NODE[mMaxNumNodes];
+    mEdgeArr_Pool = new GRAPH_EDGE[mMaxNumEdges];
+
+    mCurNumOfActiveNodes = 0;
+    mCurNumOfActiveEdges = 0;
+    mActiveNodeArr = new int[mMaxNumNodes];
+    mActiveEdgeArr = new int[mMaxNumEdges];
+
+    mFreeNodeArr = new int[mMaxNumNodes];
+    mFreeEdgeArr = new int[mMaxNumEdges];
+    //
+    for ( int i = 0; i < mMaxNumNodes; ++i ) {
+        mNodeArr_Pool[ i ].id = i;
+    }
+    for ( int i = 0; i < mMaxNumEdges; ++i ) {
+        mEdgeArr_Pool[ i ].id = i;
+    }
+    //
+    reset( );
+}
+
+/*************************complete*************************/
+void GRAPH_SYSTEM::reset( )
+{
+    stopAutoNodeDeletion();
+
+    //mNumPoints_DoubleCircles = 0;
+
+    //How many Nodes/Edges used
+    mCurNumOfActiveNodes = 0;
+    mCurNumOfActiveEdges = 0;
+
+    //How many Nodes/Edges left
+    mCurNumOfFreeNodes = mMaxNumNodes;
+    mCurNumOfFreeEdges = mMaxNumEdges;
+
+	//set index unique id which isnt used
+    for ( int i = 0; i < mCurNumOfFreeNodes; ++i ) {
+        mFreeNodeArr[ i ] = i;
+    }
+    for ( int i = 0; i < mCurNumOfFreeEdges; ++i ) {
+        mFreeEdgeArr[ i ] = i;
+    }
+
+    /****************************unknow****************************/
+    mPassiveSelectedNode = nullptr;
+    mSelectedNode = nullptr;
+    /****************************unknow****************************/
+}
+
+
+/*
+<-----get free node from pool----->
+get pool's id
+return NODE = pool+id
+give a dynamic id to NODE
+connected edge id(vector) .clear()
+pos=0,0,0
+r=1
+*/
+/*************************complete*************************/
+GRAPH_NODE *GRAPH_SYSTEM::getFreeNode( ) 
+{
+    //isnt any nodes left
+    if ( mCurNumOfFreeNodes == 0 ) return nullptr;// --> addNOde return -1
+
+    //else
+    --mCurNumOfFreeNodes;//use one
+
+    //get unique id
+    int id = mFreeNodeArr[ mCurNumOfFreeNodes];
+
+	//use id to get a DRAPH_NODE
+    GRAPH_NODE *n = &mNodeArr_Pool[ id ];
+
+	//n->id = id;
+
+	cout<<"mNodeArr_Pool["<<id<<"].id:"<<(mNodeArr_Pool[id].id)<<endl;
+	//a NODE is active
+	mActiveNodeArr[ mCurNumOfActiveNodes ] = id;
+
+	//get dynamic id
+    n->dynamicID = mCurNumOfActiveNodes;
+	
+	//add Active
+    ++mCurNumOfActiveNodes;
+    return n;
+}
+//^
+//| similar
+//V
+/*************************complete*************************/
+GRAPH_EDGE *GRAPH_SYSTEM::getFreeEdge( )
+{
+    //isnt any nodes left
+    if ( mCurNumOfFreeEdges == 0 ) return 0;
+
+    //else
+    --mCurNumOfFreeEdges;//use one
+
+    int id = mFreeEdgeArr[ mCurNumOfFreeEdges ];
+	
+	//get GRAPH_NODE with POOL
+    GRAPH_EDGE *e = &mEdgeArr_Pool[ id ];
+
+	//e->id = id;
+
+	mActiveEdgeArr[ mCurNumOfActiveEdges ] = id;
+
+	//get dynamic id
+    e->dynamicID = mCurNumOfActiveEdges;
+
+	//add Active
+    ++mCurNumOfActiveEdges;
+    return e;
+}
+
+
+//Default Graph (option 1)
+/*************************complete*************************/
+void GRAPH_SYSTEM::createDefaultGraph( )
+{
+    reset( );
+    cout << "createDefaultGraph()"<< endl;
+
+    int n_0 = addNode( 0.0, 0.0, 0.0 );
+
+    int n_1 = addNode( 5.0, 0.0, 0.0 );
+
+    int n_2 = addNode( 0.0, 0.0, 5.0 );
+
+    addEdge( n_0, n_1 );
+    addEdge( n_1, n_2 );
+}
+
+void GRAPH_SYSTEM::createNet_Horizontal( int nx, int ny )
+{
+    reset( );
+
+    float dx = 5.0;
+    float dz = 5.0;
+    vector<int> id;
+}
+
+void GRAPH_SYSTEM::createNet_Vertical( int nx, int ny )
+{
+    reset( );
+
+    float dx = 5.0;
+    float dz = 5.0;
+    vector<int> id;
+}
+
+void GRAPH_SYSTEM::createRandomGraph( int nx, int ny )
+{
+    reset( );
+
+    float dx = 5.0;
+    float dz = 5.0;
+
+}
+
+void GRAPH_SYSTEM::createRadialGraph( int nx, int ny )
+{
+    reset( );
+
+    float dx = 5.0;
+    float dz = 5.0;
+
+}
+
+/*************************complete*************************/
+void GRAPH_SYSTEM::createRandomGraph_DoubleCircles(int n)
+{
+    reset( );
+	cout<<"createRandomGraph_DoubleCircler("<<n<<")\n";
+
+    //n = 36;
+    float r = 15; // radius
+    float d = 10; // layer distance
+    float offset_x = 15.;
+    float offset_z = 15.;
+	double M_PI = 3.1415926;
+	vector<int> inID;
+	vector<int> outID;
+	inID.resize(n);
+	outID.resize(n);
+
+	for(int i=0; i<n; i++)
+	{
+		inID[i] = addNode(cos(2*M_PI*i/n)*r+offset_x , 0.0 , sin(2*M_PI*i/n)*r+offset_z);
+		outID[i] = addNode(cos(2*M_PI*i/n)*(r+d)+offset_x , 0.0 , sin(2*M_PI*i/n)*(r+d)+offset_z);
+	}
+
+	for(int i=0; i<n; i++)
+	{
+		int t=n/3;
+		int r=rand()%(t+1)-t/2;
+		int k=(i+n+r)%n;
+		addEdge(inID[i] , outID[k]);
+	}
+}
+
+/*************************complete*************************/
+void GRAPH_SYSTEM::createNet_Circular( int n, int num_layers )
+{
+    reset( );
+	cout<<"createNet_Circular("<<n<<','<<num_layers<<")\n";
+
+    float r = 5; // radius
+    float d = 5; // layer distance 
+    float offset_x = 15.;
+    float offset_z = 15.;
+	double M_PI=3.1415926;
+    vector<int> id;
+    id.resize( n*(num_layers+1) );
+
+	for(int i=0 ; i<=num_layers ; i++)
+		for(int j=0 ; j<n ; j++)
+			id[i*12+j] = addNode( cos(2*M_PI*j/n)*(i*d+r)+offset_x, 0.0, sin(2*M_PI*j/n)*(i*d+r)+offset_x );
+
+	for(int i=0; i<num_layers;i++)
+		for(int j=0;j<n;j++)
+		{
+			addEdge( id[i*12+(j+1)%n] , id[i*12+(j%n)] );
+			addEdge( id[(i+1)*12+j] , id[i*12+j] );
+		}
+
+}
+/*************************complete*************************/
+void GRAPH_SYSTEM::createNet_Square( int n, int num_layers )
+{
+    reset( );
+	cout<<"createNet_Square("<<n<<','<<num_layers<<")\n";
+
+    float d = 5; // layer distance 
+    float offset_x = 15.;
+    float offset_z = 15.;
+	int in=(num_layers-n)/2;//2
+	int out=in+n;//3
+    vector<int> id;
+	id.resize(num_layers*num_layers);
+	//in<=  x <out  ----> ignore
+	for(int i=0;i<num_layers;i++)
+	{
+		for(int j=0;j<num_layers;j++)
+		{
+			if(in<=j&&j<out&&in<=i&&i<out)
+				continue;
+			id[i*num_layers+j]=addNode(j*d, 0.0 , i*d);
+		}
+	}
+	for(int i=0;i<num_layers;i++)
+		for(int j=0;j<num_layers;j++)
+		{
+			if(i>0)
+			{
+				if(!(in<=j&&j<out))
+					addEdge( id[(i-1)*num_layers+j] , id[i*num_layers+j] );
+				else if(!(in<=i&&i<out+1))
+					addEdge( id[(i-1)*num_layers+j] , id[i*num_layers+j] );
+			}
+			if(j>0)
+			{
+				if(!(in<=i&&i<out))
+					addEdge( id[i*num_layers+(j-1)] , id[i*num_layers+j] );
+				else if(!(in<=j&&j<out+1))
+					addEdge( id[i*num_layers+(j-1)] , id[i*num_layers+j] );
+			}
+		}
+
+}
+
+/*************************complete*************************/
+void GRAPH_SYSTEM::createNet_RadialCircular( int n ) {
+
+	cout<<"createNet_RadialCircular("<<n<<")\n";
+    reset( );
+
+    float offset_x = 15.0;
+    float offset_z = 15.0;
+    float r = 15; // radius
+	int oriID;
+	double M_PI=3.1415926;
+	vector<int> id;
+	id.resize(n);
+	oriID = addNode(offset_x,0.0,offset_z);
+	for(int i=0;i<n;i++)
+	{
+		id[i]=addNode(cos(M_PI*2*i/n)*r+offset_x , 0.0 , sin(M_PI*2*i/n)*r+offset_z);
+		addEdge(id[i],oriID);
+	}
+
+}
+
+
+/****Add a node and return the id of the node****/
+/*************************complete*************************/
+int GRAPH_SYSTEM::addNode( float x, float y, float z, float r )
+{
+    GRAPH_NODE *g = getFreeNode();
+	if( g==NULL ) return -1;
+	g->p = vector3(x,y,z);
+	g->r = r;
+	g->edgeID.clear();//initial
+	return g->id;
+}
+
+/****Add an edge and return the id of an edge****/
+/*************************complete*************************/
+int GRAPH_SYSTEM::addEdge( int nodeID_0, int nodeID_1 )//pass by unique id
+{
+	cout<<"ADD EDGE:"<<nodeID_0<<','<<nodeID_1<<endl;
+    GRAPH_EDGE *h = getFreeEdge();
+	if( h==NULL ) return -1;
+	h->nodeID[0]=nodeID_0;
+	h->nodeID[1]=nodeID_1;
+	//each node add a new Edge
+	mNodeArr_Pool[ nodeID_0 ].edgeID.push_back( h->id );
+	mNodeArr_Pool[ nodeID_1 ].edgeID.push_back( h->id );
+    return h->id;
+}
+
+/*************************complete*************************/
+void GRAPH_SYSTEM::askForInput( )
+{
+    cout << "GRAPH_SYSTEM" << endl;
+    cout << "Key usage:" << endl;
+    cout << "1: create a default graph" << endl;
+    cout << "2: create a graph with 10x10 nodes. Connect the consecutive nodes horizontally" << endl;
+    cout << "3: create a graph with 10x10 nodes. Connect the consecutive nodes vertically" << endl;
+    cout << "4: create a graph with 10x10 nodes. Create 10 randomly generated edges" << endl;
+    cout << "5: create a graph with 10x10 nodes. Create 10 randomly generated edges attached at a random node" << endl;
+    cout << "Delete: delete a node and all the edges attached at it" << endl;
+    cout << "Spacebar: unselect the selected node" << endl;
+    cout << " " << endl;
+    cout << "Use the mouse to select nodes and add edges" << endl;
+    cout << "Click the left button to select/unselect or create an edge" << endl;
+    cout << " " << endl;
+    cout << "A selected node is highlighted as red." << endl;
+
+}
+
+//NEED TEST
+/*************************complete*************************/
+GRAPH_NODE *GRAPH_SYSTEM::findNearestNode( double x, double z, double &cur_distance2 ) const
+{
+    GRAPH_NODE *n = 0;
+    cur_distance2 = 2e18;//INF
+    for ( int i = 0; i < mCurNumOfActiveNodes; ++i ) 
+	{
+		GRAPH_NODE *m = &mNodeArr_Pool[mActiveNodeArr[i]];
+		double detx=m->p.x-x;
+        double detz=m->p.z-z;
+		double distance = detx*detx + detz*detz;
+        if( distance < cur_distance2)
+        {
+			n = m;
+			cur_distance2 = distance;
+		}
+    }
+    return n;
+}
+
+/*************************complete*************************/
+void GRAPH_SYSTEM::clickAt(double x, double z)
+{
+    double cur_d2;
+    GRAPH_NODE *n = findNearestNode( x, z, cur_d2 );
+	cout<<'a'<<mSelectedNode<<endl;
+    if ( n == 0 ) {
+        mSelectedNode = 0;
+        return;
+    }
+    if ( cur_d2 > n->r*n->r ) {
+        mSelectedNode = 0;
+        return;
+
+    }
+    if ( mSelectedNode == n ) {
+        mSelectedNode = 0;
+        return;
+    }
+    if ( mSelectedNode != 0 ) {
+        addEdge( mSelectedNode->id, n->id );
+        mSelectedNode = 0;
+        return;
+    }
+    mSelectedNode = n;
+	cout<<"P"<<endl;
+}
+
+void GRAPH_SYSTEM::deleteEdge( int edgeID )
+{
+    GRAPH_EDGE *e = &mEdgeArr_Pool[ edgeID ];
+	
+	//update Active
+	mCurNumOfActiveEdges--;
+	swap(mActiveEdgeArr[edgeID],mActiveEdgeArr[ mCurNumOfActiveEdges]);
+
+	//update Pool
+	//swap(mEdgeArr_Pool[ mCurNumOfActiveEdges ].dynamicID , e->dynamicID);
+	
+	//update Free
+	swap(mFreeEdgeArr[ e->id ],mFreeEdgeArr[ mCurNumOfFreeEdges ]);
+	mCurNumOfFreeEdges++;
+}
+
+void GRAPH_SYSTEM::removeEdgeFromNode( const GRAPH_EDGE *e, int nodeID )
+{
+    GRAPH_NODE *n = &mNodeArr_Pool[ nodeID ];
+    int j = 0;
+}
+void GRAPH_SYSTEM::deleteEdgesOfNode( int nodeID )
+{
+    GRAPH_NODE *n  = &mNodeArr_Pool[ nodeID ];
+}
+
+void GRAPH_SYSTEM::deleteNode( int nodeID ) {
+    if ( mCurNumOfActiveNodes <= 0 ) return;//no node can delete
+    GRAPH_NODE *n = &mNodeArr_Pool[ nodeID ];
+    int dynamicID = n->dynamicID;
+
+}
+
+void GRAPH_SYSTEM::deleteSelectedNode(  ) {
+    if ( mSelectedNode == 0 ) return;
+    deleteNode( mSelectedNode->id );
+    deleteEdgesOfNode( mSelectedNode->id );
+    mSelectedNode = 0;
+    mPassiveSelectedNode = 0;
+}
+
+bool GRAPH_SYSTEM::isSelectedNode( ) const
+{
+    return mSelectedNode != 0;
+}
+
+void GRAPH_SYSTEM::getInfoOfSelectedPoint( double &r, vector3 &p ) const
+{
+    if ( isSelectedNode( ) == false ) return;
+    r = mSelectedNode->r;
+    p = mSelectedNode->p;
+
+}
+
+
+
+void GRAPH_SYSTEM::handleKeyPressedEvent( unsigned char key )
+{
+    
+    switch( key ) {
+    case 127: // delete
+        mFlgAutoNodeDeletion = false;
+        deleteSelectedNode( );
+        break;
+    case '1':
+        mFlgAutoNodeDeletion = false;
+        createDefaultGraph( );
+        mSelectedNode = 0;
+        break;
+    case '2':
+        mFlgAutoNodeDeletion = false;
+        createNet_Circular(12, 3);
+        mSelectedNode = 0;
+
+        break;
+    case '3':
+        mFlgAutoNodeDeletion = false;
+        createNet_Square(3, 11);
+        mSelectedNode = 0;
+
+        break;
+    case '4':
+        mFlgAutoNodeDeletion = false;
+        createNet_RadialCircular(24);
+        mSelectedNode = 0;
+
+        break;
+    case '5':
+        mNumPoints_DoubleCircles = 24;
+        mFlgAutoNodeDeletion = false;
+        createRandomGraph_DoubleCircles(mNumPoints_DoubleCircles);
+        mSelectedNode = 0;
+        break;
+    case '<':
+        mNumPoints_DoubleCircles--;
+        if (mNumPoints_DoubleCircles<3) 
+            mNumPoints_DoubleCircles = 3;
+        mFlgAutoNodeDeletion = false;
+        createRandomGraph_DoubleCircles(mNumPoints_DoubleCircles);
+        mSelectedNode = 0;
+        break;
+    case '>':
+        mNumPoints_DoubleCircles++;
+        if (mNumPoints_DoubleCircles> 36) 
+            mNumPoints_DoubleCircles = 36;
+        mFlgAutoNodeDeletion = false;
+        createRandomGraph_DoubleCircles(mNumPoints_DoubleCircles);
+        mSelectedNode = 0;
+        break;
+
+    case ' ':
+        mFlgAutoNodeDeletion = false;
+        mSelectedNode = 0;
+        break;
+    case 'd':
+        mFlgAutoNodeDeletion = !mFlgAutoNodeDeletion;
+        break;
+    case 'e':
+        mFlgAutoNodeDeletion = false;
+        mSelectedNode = 0;
+        exportGraph( GRAPH_FILE_NAME );
+        break;
+    }
+}
+
+/*************************complete*************************/
+void GRAPH_SYSTEM::handlePassiveMouseEvent( double x, double z )
+{
+    double cur_d2;
+    GRAPH_NODE *n = findNearestNode( x, z, cur_d2 );
+    if ( n == 0 ) return;
+    if ( cur_d2 > n->r*n->r ) {
+        mPassiveSelectedNode = 0;
+        return;
+    }
+    mPassiveSelectedNode = n;
+}
+
+///////////////////mCurNumOfActiveNodes/////////////////////////
+/*************************complete*************************/
+int GRAPH_SYSTEM::getNumOfNodes( ) const
+{
+    return mCurNumOfActiveNodes;
+}
+
+/*************************complete*************************/
+int GRAPH_SYSTEM::getNodeID( int nodeIndex ) const
+{
+    int nodeID = mActiveNodeArr[ nodeIndex ];
+    return nodeID;
+}
+
+
+/*************************complete*************************/
+int GRAPH_SYSTEM::getNodeInfo( int nodeIndex, double &r, vector3 &p ) const
+{
+    int nodeID = mActiveNodeArr[ nodeIndex ];
+    GRAPH_NODE *n = &mNodeArr_Pool[ nodeID ];
+    r = n->r;
+    p = n->p;
+    return nodeID;
+}
+
+/*************************complete*************************/
+int GRAPH_SYSTEM::getNumOfEdges( ) const
+{
+    return mCurNumOfActiveEdges;
+}
+
+
+/*************************complete*************************/
+int GRAPH_SYSTEM::getEdgeID( int edgeIndex ) const
+{
+    int edgeID = mActiveEdgeArr[ edgeIndex ];
+    return edgeID;
+}
+
+/*************************complete*************************/
+int GRAPH_SYSTEM::getNodeIDOfEdge( int edgeIndex, int nodeIndex ) const
+{
+    int edgeID = mActiveEdgeArr[ edgeIndex ];
+    GRAPH_EDGE *e = &mEdgeArr_Pool[ edgeID ];
+    return e->nodeID[ nodeIndex ];
+}
+
+/*************************complete*************************/
+vector3 GRAPH_SYSTEM::getNodePositionOfEdge( int edgeIndex, int nodeIndex ) const
+{
+	
+	int nodeID = getNodeIDOfEdge(edgeIndex,nodeIndex);
+	return mNodeArr_Pool[ nodeID ].p;
+}
+
+/*************************complete*************************/
+void GRAPH_SYSTEM::stopAutoNodeDeletion()
+{
+    mFlgAutoNodeDeletion = false;
+}
+
+
+// For every frame, update( ) function is called.
+/*************************complete*************************/
+void GRAPH_SYSTEM::update( )
+{
+    if (mFlgAutoNodeDeletion) {
+		deleteNode(mActiveNodeArr[0]);
+        return;
+    }
+    if (mCurNumOfActiveNodes<=0) {
+		mFlgAutoNodeDeletion = false;
+        return;
+    }
+    Sleep(250);
+
+
+    mSelectedNode = 0;
+    mPassiveSelectedNode = 0;
+}
+
+//
+// Export each node to the file steam fObj
+// node_ID x y z
+// The work flow
+//
+// Get the number of nodes
+// For each node do
+//    Get the node ID of the node
+//    Get the radius and position of the node
+//    Save the node information to the file stream
+//
+// Return
+//
+void GRAPH_SYSTEM::emitNodes( std::fstream *fObj ) const
+{
+    vector3 p;
+    double r;
+    int num = getNumOfNodes( );
+}
+
+//
+// Export each edge to the file stream fObj
+// edge_ID node0_ID node1_ID
+//
+// The work flow
+//
+// Get the number of edges
+// For each edge do
+//    Get the edge ID of the edge
+//    Get the node ID of the first node of the edge
+//    Get the node ID of the second node of the edge
+//    Save the edge information to the file stream
+//
+// Return
+//
+void GRAPH_SYSTEM::emitEdges( std::fstream *fObj ) const
+{
+    int num = getNumOfEdges( );
+}
+
+//
+// The work flow
+// Create a file stream object or pointer, fObj
+// Use fObj to open a file for text output
+// Check if the file is opened successfully
+// If the file cannot be opened, show an error message and return
+// Otherwise, go on to process the following steps.
+// Get the number of nodes, n
+// Get the number of edges, m
+// Save n to fObj
+// Save m to fObj
+// Call emitNodes
+// Call emitEdges
+// Close the file
+// Delete the object fObj if necessary
+// Show a message
+//
+void GRAPH_SYSTEM::exportGraph(const std::string &fileName) const
+{
+    cout << "BEGIN GRAPH_SYSTEM::exportGraph" << endl;
+
+    //////////////////////////////////////
+    // DO NOT DELETE THE FOLLOWING LINE
+    mExport_Count_DrawingFX = Param::Export_Count_DrawingFX;
+    //////////////////////////////////////
+
+    cout << "Filename:" << fileName << endl;
+    fstream *fObj = new fstream;
+
+
+    cout << "END GRAPH_SYSTEM::exportGraph" << endl;
+
+}
+

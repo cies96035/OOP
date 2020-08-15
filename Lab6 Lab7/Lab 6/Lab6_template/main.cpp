@@ -31,7 +31,7 @@ int main()
 				inFile >> v2;
 				cout << "v1:" << v1 << endl;
 				cout << "v2:" << v2 << endl;
-				v3 = v1 + v2;
+				v3 = v1 + v2; 
 				cout << v3 << endl;
 				break;
 			case '-':
@@ -61,7 +61,7 @@ int main()
 				cout << "Normalize of v1" << endl;
 				inFile >> v1;
 				cout << "v1:" << v1 << endl;
-				cout << v1.normalize() << endl;
+				cout <<  v1.normalize() << endl;
 				break;
 			default:
 				break;

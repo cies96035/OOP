@@ -40,8 +40,10 @@ namespace {
 void IMAGE_NODE::computeDrawPosition(
     int wImage,
     int hImage) {
-    draw_x = (start_x+w/2)*sx;
-    draw_y = hImage*sy-(start_y+h/2)*sy;
+    //draw_x = (start_x+w/2)/2;
+    //draw_y = (hImage*sy*2-(start_y+h/2))/2;
+    draw_x = (start_x+w)/sx;
+    draw_y = hImage*2-(start_y+h)/sy;
 }
 
 void IMAGE_NODE::drawDisk_TriangleFan( 

@@ -103,10 +103,10 @@ void GRAPH_SYSTEM::drawNodes_Indirect( ) const
         color_f = sin(color_f*4*3.14);
         --mExport_Count_DrawingFX;
     }
-    int numEdges = getNumOfNodes( );
+    int numNodes = getNumOfNodes( );
     glColor3f(0.5*color_f, 0.5*color_f, 0.5);
     glLineWidth(2.0);
-    for ( int i = 0; i < numEdges; ++i ) {
+    for ( int i = 0; i < numNodes; ++i ) {
         double r;
         vector3 p;
         getNodeInfo( i, r, p );

@@ -123,7 +123,8 @@ float  Vector::operator*(const Vector &v)
 
 ifstream & operator>>(ifstream & in, Vector &v)
 {
-	int amount,number;
+	int amount;
+	double number;
 	in>>amount;
 	while(amount--)
 	{

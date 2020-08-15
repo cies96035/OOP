@@ -1,4 +1,4 @@
-﻿已經開始建置於 2020/7/27 下午 10:16:46。
+﻿已經開始建置於 2020/8/11 上午 11:10:02。
      1>節點 2 (build 目標) 上的專案 "C:\Users\cies_96035\Documents\資料\C++相關\OOP\hw02_oop_summer\OOP_HW02_202007_NET2010_Summer_Template\asm.vcxproj"。
      1>InitializeBuildStatus:
          由於指定了 "AlwaysCreate"，因此正在建立 "Release\SelfMotivatedSystem.unsuccessfulbuild"。
@@ -8,7 +8,16 @@
      1>00_StudentWork\00_SimpleInteractiveSystem\mySystem_GraphSystem.cpp : warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
      1>C:\Users\cies_96035\Documents\資料\C++相關\OOP\hw02_oop_summer\OOP_HW02_202007_NET2010_Summer_Template\inc\GL/gl.h : warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
      1>C:\Users\cies_96035\Documents\資料\C++相關\OOP\hw02_oop_summer\OOP_HW02_202007_NET2010_Summer_Template\inc\GL/gl.h : warning C4819: 檔案含有無法在目前字碼頁 (950) 中表示的字元。請以 Unicode 格式儲存檔案以防止資料遺失
-     1>00_StudentWork\00_SimpleInteractiveSystem\mySystem_GraphSystem.cpp(574): warning C4101: 'r' : 未參考的區域變數
+     1>00_StudentWork\00_SimpleInteractiveSystem\mySystem_GraphSystem.cpp(247): warning C4244: '引數' : 將 'double' 轉換為 'float'，由於型別不同，可能導致資料遺失
+     1>00_StudentWork\00_SimpleInteractiveSystem\mySystem_GraphSystem.cpp(247): warning C4244: '引數' : 將 'double' 轉換為 'float'，由於型別不同，可能導致資料遺失
+     1>00_StudentWork\00_SimpleInteractiveSystem\mySystem_GraphSystem.cpp(248): warning C4244: '引數' : 將 'double' 轉換為 'float'，由於型別不同，可能導致資料遺失
+     1>00_StudentWork\00_SimpleInteractiveSystem\mySystem_GraphSystem.cpp(248): warning C4244: '引數' : 將 'double' 轉換為 'float'，由於型別不同，可能導致資料遺失
+     1>00_StudentWork\00_SimpleInteractiveSystem\mySystem_GraphSystem.cpp(277): warning C4244: '引數' : 將 'double' 轉換為 'float'，由於型別不同，可能導致資料遺失
+     1>00_StudentWork\00_SimpleInteractiveSystem\mySystem_GraphSystem.cpp(277): warning C4244: '引數' : 將 'double' 轉換為 'float'，由於型別不同，可能導致資料遺失
+     1>00_StudentWork\00_SimpleInteractiveSystem\mySystem_GraphSystem.cpp(349): warning C4244: '引數' : 將 'double' 轉換為 'float'，由於型別不同，可能導致資料遺失
+     1>00_StudentWork\00_SimpleInteractiveSystem\mySystem_GraphSystem.cpp(349): warning C4244: '引數' : 將 'double' 轉換為 'float'，由於型別不同，可能導致資料遺失
+     1>00_StudentWork\00_SimpleInteractiveSystem\mySystem_GraphSystem.cpp(478): warning C4018: '<' : signed/unsigned 不相符
+     1>00_StudentWork\00_SimpleInteractiveSystem\mySystem_GraphSystem.cpp(735): warning C4101: 'r' : 未參考的區域變數
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(C:\Users\cies_96035\Documents\資料\C++相關\OOP\hw02_oop_summer\OOP_HW02_202007_NET2010_Summer_Template\Release\SelfMotivatedSystem.exe) 與 Linker 的 OutputFile 屬性值 (C:\Users\cies_96035\Documents\資料\C++相關\OOP\hw02_oop_summer\OOP_HW02_202007_NET2010_Summer_Template\bin\Release\SelfMotivatedSystem.exe) 不相符。這可能會導致您的專案建置不正確。若要改正這種情況，請確認 $(OutDir)、$(TargetName) 和 $(TargetExt) 屬性值必須與 %(Link.OutputFile) 中指定的值相符。
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:".\bin\Release\SelfMotivatedSystem.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:.\Irvine /LIBPATH:.\lib /LIBPATH:.\lib\IL freeglut.lib opengl32.lib glew32.lib glew32s.lib ILUT.lib devIL.lib ILU.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\SelfMotivatedSystem.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\cies_96035\Documents\資料\C++相關\OOP\hw02_oop_summer\OOP_HW02_202007_NET2010_Summer_Template\Release\SelfMotivatedSystem.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE:NO /IMPLIB:"C:\Users\cies_96035\Documents\資料\C++相關\OOP\hw02_oop_summer\OOP_HW02_202007_NET2010_Summer_Template\Release\SelfMotivatedSystem.lib" /MACHINE:X86 Release\myBasicTools.obj
@@ -61,4 +70,4 @@
 
 建置成功。
 
-經過時間 00:00:04.52
+經過時間 00:00:05.96
