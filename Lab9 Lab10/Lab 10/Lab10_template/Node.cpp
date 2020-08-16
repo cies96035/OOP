@@ -1,18 +1,25 @@
 #include "Node.h"
-int Node::getValue() {
-
+int Node::getValue() 
+{
+    return this->value;
 }
 
-Node* Node::getLchild() {
-
-}
-Node* Node::getRchild() {
-
+Node* Node::getLchild() 
+{
+    return this->lchild;
 }
 
-void Node::setLchild(Node* node) {
-
+Node* Node::getRchild() 
+{
+    return this->rchild;
 }
-void Node::setRchild(Node* node) {
 
+void Node::setLchild(Node* node) 
+{
+    lchild=node;
+}
+
+void Node::setRchild(Node* node) 
+{
+    rchild=node;
 }
